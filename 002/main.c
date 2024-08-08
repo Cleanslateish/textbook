@@ -184,6 +184,36 @@ int view_contacts(){
   return 0;
 }
 
+int destroy_contacts_file_on_empty(){
+  char ch;
+  int isEmpty = 1;
+
+  FILE* file = fopen("contacts.txt", "r");
+  if(file == NULL){
+    printf("$|Error opening file.\n");
+    return 1;
+  }
+  
+  
+  while((ch = fgetc(file)) != EOF){
+    if(!isspace(ch)){
+      isEmpty = 0;
+      break;
+    }
+  }
+
+  fclose(file);
+
+  if(isEmpty){
+    if(remove("contacts.txt") == 0){
+    }else{
+      printf("$|Error deleting file.\n");
+    }
+  }
+
+  return 0;
+}
+
 int delete_contact(){
   char delete_contact_buffer[256];
   view_contacts();
@@ -197,13 +227,13 @@ int delete_contact(){
 
   FILE* file = fopen("contacts.txt", "r");
   if(file == NULL){
-    printf("$|Error opening file.");
+    printf("$|There are no saved contacts.\n");
     return 1;
   }
 
   FILE* tempFile = fopen("temp.txt", "w");
   if(tempFile == NULL){
-    printf("$|Error creating temporary file.");
+    printf("$|Error creating temporary file.\n");
     fclose(file);
     return 1;
   }
@@ -235,16 +265,17 @@ int delete_contact(){
   fclose(tempFile);
 
   if(remove("contacts.txt") != 0){
-      printf("Error deleting the original file.");
+      printf("Error deleting the original file.\n");
       return 1;
   }
 
   if(rename("temp.txt", "contacts.txt") != 0){
-    printf("Error renaming the temporary file.");
+    printf("Error renaming the temporary file.\n");
     return 1;
   }
 
 
+  destroy_contacts_file_on_empty(); 
   return 0;
 }
 
