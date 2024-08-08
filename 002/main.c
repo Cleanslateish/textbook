@@ -187,6 +187,7 @@ int view_contacts(){
 int delete_contact(){
   char delete_contact_buffer[256];
   view_contacts();
+  printf("\n0|Cancel");
   printf("\n$|Please input the name of the contact you wish to delete: ");
   
   if(fgets(delete_contact_buffer, 256, stdin)  == NULL){
@@ -208,12 +209,26 @@ int delete_contact(){
   }
 
   char line[256];
+  int found = 0;
+  int lineSkip = 0;
   while(fgets(line, sizeof(line), file)){
-    if(strstr(line, delete_contact_buffer) == NULL){
+    if(strcmp(delete_contact_buffer, "0") == 0){
+      printf("\n$|Cancel-x \n");
+      press_any_key_to_continue();
+      return 0;
+    }
+    if(!found && strstr(line, delete_contact_buffer)){
+      found = 1;
+      lineSkip = 3;
+      continue;
+    } 
+
+    if(lineSkip > 0){
+      lineSkip--;
+    }else{
       fputs(line, tempFile);
     }
   }
-
 
 
   fclose(file);
