@@ -1,8 +1,15 @@
-Name: mihailo mladenovic
 Phone Number: 0631220242
 Email: mihailo.mladenovic2@gmail.com
 
-Name: dragan mladenovic
+Name: Dragan Mladenovic
 Phone Number: 0631220242
 Email: dr.mlad@gmail.com
+
+Name: Lazar Petrovic
+Phone Number: 0631220242
+Email: lazarpetrovic9@gmail.com
+
+Name: Katarina Mladenovic
+Phone Number: 0631220242
+Email: katarinamladenovic@gmail.com
 
