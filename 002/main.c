@@ -170,7 +170,7 @@ int view_contacts(){
   
 
   if(file == NULL){
-    printf("$|Error opening file!\n");
+    printf("$|Error opening file.\n");
     return 1;
   }
 
@@ -207,7 +207,7 @@ int destroy_contacts_file_on_empty(){
   if(isEmpty){
     if(remove("contacts.txt") == 0){
     }else{
-      printf("$|Error deleting file.\n");
+      printf("\n$|Error deleting file.\n");
     }
   }
 
@@ -216,10 +216,15 @@ int destroy_contacts_file_on_empty(){
 
 int delete_contact(){
   char delete_contact_buffer[256];
-  view_contacts();
-  printf("\n0|Cancel");
-  printf("\n$|Please input the name of the contact you wish to delete: ");
-  
+  if(view_contacts() == 0){
+    printf("\n0|Cancel");
+    printf("\n$|Please input the name of the contact you wish to delete: ");
+  }else{
+    printf("$|There are no contacts to delete. \n");
+    press_any_key_to_continue();
+    return 1;
+  }
+
   if(fgets(delete_contact_buffer, 256, stdin)  == NULL){
     printf("\n$|Error reading delete contact input.\n");
     press_any_key_to_continue();
@@ -244,6 +249,20 @@ int delete_contact(){
   while(fgets(line, sizeof(line), file)){
     if(strcmp(delete_contact_buffer, "0") == 0){
       printf("\n$|Cancel-x \n");
+
+      fclose(file);
+      fclose(tempFile);
+
+      if(remove("contacts.txt") != 0){
+          printf("Error deleting the original file.\n");
+          return 1;
+      }
+
+      if(rename("temp.txt", "contacts.txt") != 0){
+        printf("Error renaming the temporary file.\n");
+        return 1;
+      }
+
       press_any_key_to_continue();
       return 0;
     }
