@@ -1,0 +1,5 @@
+for file in /path/to/folder/*.txt; do echo "===== $file ====="; cat "$file"; echo; done
+
+
+
+This will output all of the txt files in the console for easier viewing. (remember to zoom out the console a little bit to make the images more readable ctrl + -)

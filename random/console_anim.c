@@ -1,16 +1,18 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
 
-#define WIDTH 80
-#define HEIGHT 30
+#define WIDTH 190
+#define HEIGHT 46
 
 struct Circle{
     int x, y, v_x, v_y, radius;
 };
 
 void clear_screen(){
-    printf("\e[2J");
+    system("clear");  // only for linux, looks nicer though.
+    // printf("\e[2J"); enable this to make it work on any machine.
 }
 
 void reset_cursor(){
@@ -25,7 +27,7 @@ void print_frame(struct Circle circle){
             if(distance < circle.radius){
                 printf("@");
             }else{
-                printf(".");
+                printf(" ");
             }
         }
         printf("\n");
@@ -38,23 +40,23 @@ void step_animation(struct Circle *circle){
     
     if(circle->x - circle->radius < 0)
         circle->v_x = - circle->v_x;
-    if(circle->x + circle->radius > WIDTH)
+    if(circle->x + circle->radius >= WIDTH)
         circle->v_x = - circle->v_x;
     if(circle->y - circle->radius < 0)
         circle->v_y = - circle->v_y;
-    if(circle->y + circle->radius > HEIGHT)
+    if(circle->y + circle->radius >= HEIGHT)
         circle->v_y = - circle->v_y;
     
 }
 
 int main(){
-    struct Circle circle1 = {10, 5, 1, 1, 4}; //x, y, v_x, v_y, radius;
+    struct Circle circle1 = {30, 15, 1, 1, 8}; //x, y, v_x, v_y, radius;
 
     clear_screen();
 
     while(1){
         print_frame(circle1);
-        usleep(100000);
+        usleep(20000);
         reset_cursor();
         step_animation(&circle1);
     }
